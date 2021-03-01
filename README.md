@@ -1,5 +1,5 @@
 # TTS - Text to Speech on Linux with natural voice
-A fast method for the text that you select, PDF or EPUB.
+A fast method for the text that you select, Text, PDF or EPUB.
 
 ## Description
 
@@ -21,7 +21,6 @@ The process executes instantly. <br>
 * We will use the **program xclip** to get the current selected text in a X program. We will not need to make copy and paste, only select the text and hit the short key for TTS in English or the short key for TTS on Portuguese. <br>
 
 * We will use the **program gtts** to send the text to Google and to receive the audio in MP3. The TTS is of high natural quality. It doesn't produce fatigue. <br>
-<br>
   **gtts** <br> 
   [https://github.com/pndurette/gTTS](https://github.com/pndurette/gTTS)
 
@@ -218,6 +217,7 @@ While reading we will have a high degree of comprehension and we will learn much
 * The first two shell scripts where adapted from this page: <br>
   [https://askubuntu.com/questions/53896/natural-sounding-text-to-speech](https://askubuntu.com/questions/53896/natural-sounding-text-to-speech)
 
+* I would like to thank to João Alves for the tips on doing all sed's in a single command.
 
 ## I hope that this is useful to you 
 
