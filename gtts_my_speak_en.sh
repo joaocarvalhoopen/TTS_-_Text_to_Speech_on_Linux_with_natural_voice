@@ -28,7 +28,9 @@ xclip -out > $TXT_A
 #sed -i 's/i\.e\./that is/gi' $TXT
 #sed -i 's/e\.g\./for example/gi' $TXT
 
-sed -i 's/ :[pP]/./g;
+sed -i 's/[<]/ ./g;
+        s/[>]/ ./g; 
+        s/ :[pP]/./g;
         s/ :\//./g;
         s/ :D/./g;
         s/ ;D/./g;
@@ -45,7 +47,7 @@ sed -i 's/ :[pP]/./g;
 $MY_USER_DIR/anaconda3/bin/python $MY_USER_DIR/gtts_my_speak/gtts_remove_newlines_intel.py $TXT_A $TXT_B
 
 sleep 1.0
-$MY_USER_DIR/anaconda3/bin/gtts-cli -f $TXT_B | play -t mp3 - tempo 1.3
+$MY_USER_DIR/anaconda3/bin/gtts-cli -l en -f $TXT_B | play -t mp3 - tempo 1.25
 
 # /home/joao/anaconda3/bin/gtts-cli -l en -f $TXT -o /dev/shm/speak.mp3  
 # play /dev/shm/speak.mp3
