@@ -29,7 +29,7 @@ The process executes instantly. <br>
 
 ## To install do...
 
-```
+``` sh
 pip install gTTS
 sudo apt install xclip
 sudo apt install sox
@@ -39,8 +39,16 @@ sudo apt-get install libsox-fmt-mp3
 
 To test if all is correctly installed, and to ear the quality of the audio, do:
 
-```
+``` sh
 gtts-cli -l pt 'Bom dia!' | play -t mp3 -
+
+```
+
+**Create a directory** called ```gtts_my_speak``` under your user directory. <br>
+
+``` sh
+mkdir gtts_my_speak
+cd gtts_my_speak
 
 ```
 
@@ -48,15 +56,18 @@ Then we will add the two following shellscript, **where is joao you should chang
 <br>
 **Filename: gtts_my_speak_pt.sh**
 
-```
+``` sh
 #!/bin/bash
 
-#play hello.mp3
+# play /home/joao/gtts_my_speak/hello.mp3
 
-TXT="/dev/shm/speak.txt"
+MY_USER_DIR="/home/joao"
+
+TXT_A="/dev/shm/speak_a.txt"
+TXT_B="/dev/shm/speak_b.txt"
 
 # save X text selection to a file
-xclip -out > $TXT
+xclip -out > $TXT_A
 
 # remove smiles
 #sed -i 's/ :[pP]/./' $TXT
@@ -76,40 +87,45 @@ xclip -out > $TXT
 #sed -i 's/i\.e\./that is/gi' $TXT
 #sed -i 's/e\.g\./for example/gi' $TXT
 
-# In one single invocation to sed.
 sed -i 's/ :[pP]/./g;
         s/ :\//./g;
         s/ :D/./g;
         s/ ;D/./g;
         s/ :(/./g;
-        s/[^a-z]IPv6[^a-z]/I P version 6/gi;
-        s/[^a-z]MR[^a-z]/merge request/gi;
-        s/[^a-z]btw[^a-z]/by the way/gi;
-        s/[^a-z]WIP[^a-z]/work in progress/gi;
-        s/[^a-z]CLI[^a-z]/command line/gi;
-        s/i\.e\./that is/gi;
-        s/e\.g\./for example/gi;
-        '$TXT
+        s/[^a-z]IPv6[^a-z]/I P version 6/g;
+        s/[^a-z]MR[^a-z]/merge request/g;
+        s/[^a-z]btw[^a-z]/by the way/g;
+        s/[^a-z]WIP[^a-z]/work in progress/g;
+        s/[^a-z]CLI[^a-z]/command line/g;
+        s/i\.e\./that is/g;
+        s/e\.g\./for example/g;
+        ' $TXT_A
 
-sleep 1.5
-/home/joao/anaconda3/bin/gtts-cli -l pt -f $TXT | play -t mp3 - tempo 1.5
+$MY_USER_DIR/anaconda3/bin/python $MY_USER_DIR/gtts_my_speak/gtts_remove_newlines_intel.py $TXT_A $TXT_B
 
-# /home/joao/anaconda3/bin/gtts-cli -f $TXT -o /dev/shm/speak.mp3  
+sleep 1.0
+$MY_USER_DIR/anaconda3/bin/gtts-cli -f $TXT_B | play -t mp3 - tempo 1.3
+
+# /home/joao/anaconda3/bin/gtts-cli -l en -f $TXT -o /dev/shm/speak.mp3  
 # play /dev/shm/speak.mp3
+
 
 ```
 
 **Filename: gtts_my_speak_en.sh**
 
-```
+``` sh
 #!/bin/bash
 
-#play hello.mp3
+# play /home/joao/gtts_my_speak/hello.mp3
 
-TXT="/dev/shm/speak.txt"
+MY_USER_DIR="/home/joao"
+
+TXT_A="/dev/shm/speak_a.txt"
+TXT_B="/dev/shm/speak_b.txt"
 
 # save X text selection to a file
-xclip -out > $TXT
+xclip -out > $TXT_A
 
 # remove smiles
 #sed -i 's/ :[pP]/./' $TXT
@@ -129,34 +145,36 @@ xclip -out > $TXT
 #sed -i 's/i\.e\./that is/gi' $TXT
 #sed -i 's/e\.g\./for example/gi' $TXT
 
-# In one single invocation to sed.
 sed -i 's/ :[pP]/./g;
         s/ :\//./g;
         s/ :D/./g;
         s/ ;D/./g;
         s/ :(/./g;
-        s/[^a-z]IPv6[^a-z]/I P version 6/gi;
-        s/[^a-z]MR[^a-z]/merge request/gi;
-        s/[^a-z]btw[^a-z]/by the way/gi;
-        s/[^a-z]WIP[^a-z]/work in progress/gi;
-        s/[^a-z]CLI[^a-z]/command line/gi;
-        s/i\.e\./that is/gi;
-        s/e\.g\./for example/gi;
-        '$TXT
+        s/[^a-z]IPv6[^a-z]/I P version 6/g;
+        s/[^a-z]MR[^a-z]/merge request/g;
+        s/[^a-z]btw[^a-z]/by the way/g;
+        s/[^a-z]WIP[^a-z]/work in progress/g;
+        s/[^a-z]CLI[^a-z]/command line/g;
+        s/i\.e\./that is/g;
+        s/e\.g\./for example/g;
+        ' $TXT_A
 
-sleep 1.5
-/home/joao/anaconda3/bin/gtts-cli -l en -f $TXT | play -t mp3 - tempo 1.2
+$MY_USER_DIR/anaconda3/bin/python $MY_USER_DIR/gtts_my_speak/gtts_remove_newlines_intel.py $TXT_A $TXT_B
+
+sleep 1.0
+$MY_USER_DIR/anaconda3/bin/gtts-cli -l pt -f $TXT_B | play -t mp3 - tempo 1.5
 
 # /home/joao/anaconda3/bin/gtts-cli -f $TXT -o /dev/shm/speak.mp3  
 # play /dev/shm/speak.mp3
+
 
 ```
 
 Then it is necessary to change the permission on the shell scripts in the terminal so they become executable. <br>
 
-```
-chmod u+x ~/gtts_my_speak_pt.sh
-chmod u+x ~/gtts_my_speak_en.sh
+``` sh
+chmod u+x ./gtts_my_speak_pt.sh
+chmod u+x ./gtts_my_speak_en.sh
 
 ```
 
@@ -168,11 +186,11 @@ On the desktop of Ubuntu, right upper corner in the arrow pointing downwards -> 
 
 ```
 Name: gtts - speak selected text Portuguese
-Command: /home/joao/gtts_my_speak_pt.sh
+Command: /home/joao/gtts_my_speak/gtts_my_speak_pt.sh
 keys shortcut: super + 'C cedelhado'  Choose one
 
 Name: gtts - speak selected text English
-Command: /home/joao/gtts_my_speak_en.sh
+Command: /home/joao/gtts_my_speak/gtts_my_speak_en.sh
 keys shortcut: super + '-'
 
 ```
@@ -182,15 +200,15 @@ keys shortcut: super + '-'
 
 **Filename: gtts_my_speak_kill.sh**
 
-```
+``` sh
 ps aux | grep "play -t mp3 -"| grep -v grep | awk '{print $2}' | xargs kill
 
 ```
 
 To make the shell script executable do: <br>
 
-```
-chmod u+x ~/gtts_my_speak_kill.sh
+``` sh
+chmod u+x ./gtts_my_speak_kill.sh
 
 ```
 
@@ -199,8 +217,70 @@ Change ```/home/joao``` to your username ```/home/username```. <br>
 
 ```
 Name: gtts - speak selected text - Kill process
-Command: /home/joao/gtts_my_speak_kill.sh
+Command: /home/joao/gtts_my_speak/gtts_my_speak_kill.sh
 keys shortcut: super + '.'
+
+```
+
+Create the Python file and put it in the same directory ```~/gtts_my_speak ```. <br>
+<br>
+Filename: gtts_remove_newlines_intel.py <br>
+
+``` python
+#!/usr/bin/env python
+
+# This program removes the \n (newlines) if it isn't in the end
+# of a sentence, that terminates with a dot. 
+
+import sys
+
+print(str(sys.argv))
+if len(sys.argv) != 3:
+    print(f"Usage: python gtts_remove_newlines_intel.py  /dev/shm/speak_a.txt /dev/shm/speak_b.txt")
+    exit()
+
+file_input_name  = sys.argv[1]
+file_output_name = sys.argv[2]
+
+file_input = open(file_input_name, "r")
+input_lines = file_input.readlines()
+file_input.close()
+
+lst = []
+flag_removed_last_line_newline = False
+for line in input_lines:
+    # New Line to be removed if not at the end of a phrase
+    # terminated with a dot.
+    if line.endswith("\n") and not line.endswith(".\n"):
+        lst.append(line[:-1])
+        lst.append(" ")
+        flag_removed_last_line_newline = True
+    else:
+        # Normal line.
+        if flag_removed_last_line_newline:
+            # Corrects the removed \n (new line), by putting it
+            # back again. If the the current line starts with a
+            # upper case. 
+            if len(line) > 0 and line[0].isupper():
+                del lst[-1]
+                lst.append("\n")
+        lst.append(line)
+        flag_removed_last_line_newline = False
+
+text_output = "".join(lst)
+
+print(text_output)
+
+file_output = open(file_output_name, "w")
+file_output.write(text_output)
+file_output.close()
+
+```
+
+To make the Python shell script executable do: <br>
+
+``` sh
+chmod u+x ./gtts_remove_newlines_intel.py
 
 ```
 
